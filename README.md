@@ -17,6 +17,11 @@ unit spec JSON  ── validate_spec.py ──▶ reject → the model retries w
 gen_dxf.py ──▶ DXF: elevation + plan + section A-A on a titled sheet
 ```
 
+![sample sheet](docs/preview.png)
+
+*Output of `gen_dxf.py` on `data/example_spec.json`: A1 at 1:4, elevation + plan + section A-A,
+title block and fabrication notes.*
+
 ## What is here
 
 ```
@@ -102,3 +107,17 @@ Training runs on a free Kaggle T4 (~30 GPU-hours a week) or on paid HF Jobs
 ## Licence
 
 Apache-2.0 for code and rules template; CC-BY-4.0 for the sample pairs.
+
+---
+
+## باختصار (بالعربي)
+
+الموديل مش بيرسم — الموديل بيطلّع **مواصفات** (JSON)، والمدقّق بيرفض أي حاجة مخالفة لقواعد
+الورشة، والمولّد بيرسم الـDXF. عشان كده الرسم بيطلع مظبوط كل مرة ومراجَع.
+
+لو عندك ورشة نجارة، أنفع حاجة تبعتلنا **حالة غلط اتصححت**: المواصفة الغلط، القاعدة اللي
+اتكسرت، والتصحيح. راجع `CONTRIBUTING.md`. ممنوع أي مواد عملاء أو مشاريع أو أسعار — أرقام
+وطريقة بس.
+
+الأرقام كلها في `data/rules.yaml`؛ غيّرها على شغلكم، والمدقّق هيتغير معاها.
+
