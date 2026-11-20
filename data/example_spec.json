@@ -1,0 +1,55 @@
+{
+  "unit_id": "BU-01",
+  "type": "base_unit",
+  "units": "mm",
+  "overall": {
+    "w": 600,
+    "h": 720,
+    "d": 560
+  },
+  "carcass": {
+    "material": "MDF",
+    "thickness": 18,
+    "back_thickness": 8,
+    "joint": "dowel_cam",
+    "shelf_count": 1,
+    "shelf_type": "adjustable"
+  },
+  "doors": {
+    "count": 1,
+    "type": "full_overlay",
+    "thickness": 18,
+    "gap": 2,
+    "hinge_side": "left",
+    "handles": "concealed aluminium profile"
+  },
+  "plinth": {
+    "height": 150,
+    "setback": 50,
+    "material": "painted softwood",
+    "rail": [
+      40,
+      40
+    ]
+  },
+  "worktop": {
+    "present": true,
+    "thickness": 40,
+    "overhang": 20
+  },
+  "finish": {
+    "exterior": "natural oak veneer",
+    "interior": "white melamine",
+    "edge_band": 2.0,
+    "colour_code": "H3710 ST12"
+  },
+  "grain_direction": "vertical",
+  "notes": "870 mm total including 150 plinth and 40 worktop.",
+  "skirting": {
+    "present": true,
+    "height": 50,
+    "face_setback": 50
+  },
+  "project_no": "P-2401",
+  "project_name": "SAMAYA FACTORY - WORKSHOP PACKAGE"
+}

@@ -1,0 +1,168 @@
+# -----------------------------------------------------------------------------
+# Joinery rules — TEMPLATE
+#
+# This is the file the validator enforces. Every number in it is editable, and
+# that is the point: two workshops should disagree about some of these, and the
+# gate must follow YOUR practice, not ours.
+#
+# Start here, then change what is different in your shop. Nothing in the code
+# hardcodes a number.
+# -----------------------------------------------------------------------------
+
+units: mm
+
+# Design for production: sizes in whole centimetres (920, not 925).
+production:
+  round_to_mm: 10
+  rule: "unit widths, depths and heights end in 0; exceptions are material thicknesses, joints and site fillers"
+
+# Boards the shop actually stocks. Anything else is rejected.
+panel_thickness:
+  carcass: [18]
+  back: [8]
+  door: [18]
+  shelf: [18]
+  worktop: [20, 40]
+stock_sizes:
+  melamine_board: [8, 18]
+  mdf: [3, 6, 9, 12, 16, 18, 25]
+  softwood_planed: [[20, 40], [40, 40], [40, 60], [45, 95]]
+  hardwood: [20, 25, 30, 40, 50]
+  sheet_mm: [2800, 2070]
+
+# Envelope per unit type (mm)
+unit_limits:
+  base_unit:   {w: {min: 200, max: 1200}, h: {min: 400, max: 1000}, d: {min: 400, max: 650}}
+  wall_unit:   {w: {min: 200, max: 1200}, h: {min: 300, max: 1200}, d: {min: 250, max: 400}}
+  tall_unit:   {w: {min: 300, max: 1200}, h: {min: 1200, max: 2700}, d: {min: 450, max: 650}}
+  wardrobe:    {w: {min: 400, max: 1800}, h: {min: 1800, max: 2700}, d: {min: 500, max: 700}}
+
+# Doors and hinges
+doors:
+  gap_min: 2
+  gap_max: 3
+  hinge_cup_diameter: 35
+  hinge_cup_from_edge: 22.5
+  hinge_dowel_mm: [8, 12]
+  plate_dowel_mm: [5, 12]
+  max_door_width: 600
+  max_door_width_by_type: {base_unit: 600, wall_unit: 600, tall_unit: 600, wardrobe: 900}
+  max_door_height: 2100
+  max_door_height_by_type: {base_unit: 900, wall_unit: 1300, tall_unit: 2100, wardrobe: 2400}
+  overlay_max: 20
+  rule: "every unit with doors gets a hinge detail; every screw into board goes into a plastic dowel"
+
+# Plinth: painted softwood on 40x40 rails, never board
+plinth:
+  material: "painted softwood"
+  rail_mm: [40, 40]
+  height_min: 40
+  height_max: 150
+  setback_min: 0
+  setback_max: 100
+
+# Skirting belongs to the unit, not to a separate run
+skirting:
+  height: 50
+  face_setback: 50
+  rule: "the unit's overall height stays: the skirting takes its height from the lowest part"
+
+# Joinery never runs tight to the ceiling
+shadow_gap:
+  to_ceiling_min: 20
+
+# Stone tops
+marble:
+  thickness: 20
+  rule: "sits directly on the carcass, no substrate, stone-safe silicone, no screws"
+
+counter:
+  display_total_mm: 700
+
+worktop:
+  overhang_min: 15
+  overhang_max: 40
+
+shelves:
+  max_clear_span: 900
+  adjustable_gap_from_side: 20
+
+drawers:
+  min_height: 90
+  max_height: 280
+  side_clearance_each_side: 12.5
+
+# Edges that show get 1-2 mm ABS/PVC; hidden edges sealed in damp locations
+edge_band:
+  allowed: [1.0, 2.0]
+  exposed: 2.0
+  concealed: 1.0
+
+# Drawing standard: ISO 128 / ISO 129-1 / ISO 3098 / ISO 5455
+drafting:
+  scale:
+    fixing_detail: 2
+    construction_detail: 5
+    unit_section: 10
+    wall_elevation: 20
+    store_plan: 50
+    key_plan: 100
+    default: 10
+  lineweights_mm:
+    cut: 0.50
+    visible: 0.25
+    thin: 0.13
+    hidden: 0.13
+    centre: 0.13
+  layers:
+    cut: "A-CUT"
+    visible: "A-VISIBLE"
+    hidden: "A-HIDDEN"
+    centre: "A-CENTRE"
+    dim: "A-DIM"
+    text: "A-TEXT"
+    hatch: "A-HATCH"
+    frame: "A-FRAME"
+  dimension:
+    font: Arial
+    text_mm: 5
+    colour: blue
+    arrow: "filled 30 degree"
+    arrow_mm: 3.5
+    witness_gap_mm: 3
+    witness_extension_mm: 3
+    string_spacing_mm: 12
+    min_segment_mm: 60
+    overall_text_mm: 7
+    overall_bold: true
+  text:
+    font: Arial
+    note_mm: 5
+    heading_mm: 5.5
+    keynote_mm: 6
+    min_printed_mm: 2.5
+  dimension_reference: "carcass face"
+  grain_direction_rule: "along the longest dimension of the component; the same on panels seen together"
+
+joints:
+  allowed: [dowel_cam, confirmat, biscuit, domino, mitre_lock]
+  dowel_diameter: 8
+  dowel_depth: 30
+  cam_diameter: 15
+  confirmat: "7x50"
+  mitre_deg: 45
+  rule: "a rebated rail is one piece, never two strips glued — a glue line under paint cracks"
+
+tolerances:
+  linear: "+/-1"
+  squareness: "1 mm per 1000 mm"
+  door_reveal: "+/-0.5"
+
+sheet_notes:
+  - "1. All dimensions in mm. Do not scale."
+  - "2. Check all sizes on site before cutting."
+  - "3. Fabricate only from the latest approved revision."
+  - "4. Boards 18 mm unless noted. FR = fire-rated MDF."
+  - "5. Edges banded to match the face unless noted."
+  - "6. Stone 20 mm unless noted, to approved samples."
+  - "7. Finishes and colours to approved samples."

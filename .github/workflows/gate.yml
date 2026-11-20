@@ -1,0 +1,49 @@
+name: gate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install ezdxf jsonschema pyyaml
+      - name: good spec must pass
+        run: python scripts/validate_spec.py data/example_spec.json
+      - name: bad spec must fail
+        run: |
+          if python scripts/validate_spec.py data/example_spec_bad.json; then
+            echo "the broken spec was accepted — the gate is not working"; exit 1
+          else
+            echo "broken spec correctly rejected";
+          fi
+      - name: generator produces a DXF
+        run: |
+          python scripts/gen_dxf.py data/example_spec.json /tmp/unit.dxf --sheet a1
+          test -s /tmp/unit.dxf
+      - name: the committed samples must all pass the gate
+        run: |
+          rm -rf /tmp/samples && mkdir -p /tmp/samples && cp data/sample_pairs.jsonl /tmp/samples/
+          python scripts/build_dataset.py /tmp/samples --out /tmp/sample_out
+          python - <<'PY'
+          import json, pathlib
+          rep = json.loads(pathlib.Path("/tmp/sample_out/build_report.json").read_text())
+          print(rep)
+          assert rep["spec_rejected"] == 0, "a committed sample breaks the rules it ships with"
+
+      - name: every contributed pair survives the builder
+        run: |
+          mkdir -p /tmp/raw && cp data/sample_pairs.jsonl /tmp/raw/ && cp -r data/raw/* /tmp/raw/ 2>/dev/null || true
+          python scripts/build_dataset.py /tmp/raw --out /tmp/out
+          python - <<'PY'
+          import json, pathlib
+          rep = json.loads(pathlib.Path("/tmp/out/build_report.json").read_text())
+          print(rep)
+          assert rep["kept"] > 0, "no pairs survived"
+          assert rep["forbidden_entity"] == 0, "client/entity names found in submitted data"
+          PY

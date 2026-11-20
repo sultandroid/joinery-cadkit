@@ -1,0 +1,299 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Samaya joinery unit specification",
+  "description": "Structured output the fine-tuned model must produce. A deterministic generator (scripts/gen_dxf.py) turns this into a DXF, so the schema is the real contract between the model and the drawing.",
+  "type": "object",
+  "required": [
+    "unit_id",
+    "type",
+    "units",
+    "overall",
+    "carcass",
+    "finish"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "unit_id": {
+      "type": "string",
+      "pattern": "^[A-Z]{1,3}-[0-9]{1,3}$"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "base_unit",
+        "wall_unit",
+        "tall_unit",
+        "wardrobe"
+      ]
+    },
+    "units": {
+      "type": "string",
+      "enum": [
+        "mm"
+      ]
+    },
+    "overall": {
+      "type": "object",
+      "required": [
+        "w",
+        "h",
+        "d"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "w": {
+          "type": "number",
+          "minimum": 100
+        },
+        "h": {
+          "type": "number",
+          "minimum": 100
+        },
+        "d": {
+          "type": "number",
+          "minimum": 100
+        }
+      }
+    },
+    "carcass": {
+      "type": "object",
+      "required": [
+        "material",
+        "thickness",
+        "back_thickness",
+        "joint",
+        "shelf_count",
+        "shelf_type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "material": {
+          "type": "string",
+          "enum": [
+            "MDF",
+            "MDF_FR",
+            "MDF_MR",
+            "PLY",
+            "PLY_MR",
+            "CHIPBOARD",
+            "EGGER"
+          ]
+        },
+        "thickness": {
+          "type": "number"
+        },
+        "back_thickness": {
+          "type": "number"
+        },
+        "joint": {
+          "type": "string",
+          "enum": [
+            "dowel_cam",
+            "confirmat",
+            "biscuit",
+            "domino",
+            "mitre_lock"
+          ]
+        },
+        "shelf_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8
+        },
+        "shelf_type": {
+          "type": "string",
+          "enum": [
+            "fixed",
+            "adjustable",
+            "none"
+          ]
+        },
+        "partitions": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        }
+      }
+    },
+    "doors": {
+      "type": "object",
+      "required": [
+        "count",
+        "type",
+        "thickness",
+        "gap"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 6
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "full_overlay",
+            "inset",
+            "half_overlay",
+            "flip_up",
+            "sliding"
+          ]
+        },
+        "thickness": {
+          "type": "number"
+        },
+        "gap": {
+          "type": "number"
+        },
+        "hinge_side": {
+          "type": "string",
+          "enum": [
+            "left",
+            "right",
+            "both",
+            "none"
+          ]
+        },
+        "handles": {
+          "type": "string"
+        }
+      }
+    },
+    "drawers": {
+      "type": "array",
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "required": [
+          "height"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "height": {
+            "type": "number"
+          },
+          "runner": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "plinth": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "height": {
+          "type": "number"
+        },
+        "setback": {
+          "type": "number"
+        },
+        "material": {
+          "type": "string"
+        },
+        "rail": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      }
+    },
+    "worktop": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "present": {
+          "type": "boolean"
+        },
+        "thickness": {
+          "type": "number"
+        },
+        "overhang": {
+          "type": "number"
+        }
+      }
+    },
+    "finish": {
+      "type": "object",
+      "required": [
+        "exterior",
+        "interior",
+        "edge_band"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "exterior": {
+          "type": "string"
+        },
+        "interior": {
+          "type": "string"
+        },
+        "edge_band": {
+          "type": "number"
+        },
+        "colour_code": {
+          "type": "string",
+          "description": "EGGER code with texture, e.g. 'H3710 ST12'"
+        },
+        "paint_ral": {
+          "type": "string"
+        }
+      }
+    },
+    "grain_direction": {
+      "type": "string",
+      "enum": [
+        "vertical",
+        "horizontal",
+        "na"
+      ]
+    },
+    "notes": {
+      "type": "string"
+    },
+    "marble": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "present": {
+          "type": "boolean"
+        },
+        "thickness": {
+          "type": "number"
+        }
+      }
+    },
+    "skirting": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "present": {
+          "type": "boolean"
+        },
+        "height": {
+          "type": "number"
+        },
+        "face_setback": {
+          "type": "number"
+        }
+      }
+    },
+    "shadow_gap_to_ceiling": {
+      "type": "number",
+      "minimum": 0
+    },
+    "project_no": {
+      "type": "string"
+    },
+    "project_name": {
+      "type": "string"
+    },
+    "drawing_no": {
+      "type": "string"
+    }
+  }
+}
